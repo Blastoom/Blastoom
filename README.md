@@ -18,7 +18,7 @@ This page is the public catalog: what each system does, how it is architected, a
 
 ## Currently live
 
-### [web3-rwa-monitor](https://github.com/Blastoom/web3-rwa-monitor) · Public · Deployed
+### [web3-rwa-monitor](https://github.com/Blastoom/web3-rwa-monitor) · Public · [Live dashboard](https://web3-rwa-monitor.pages.dev)
 
 Real-time dashboard tracking the global real-world-asset (RWA) tokenization landscape: total RWA market cap, tokenized treasuries, private credit, bonds, equities and real estate, DeFi TVL, stablecoin composition, and on-chain metrics across the top 15 blockchains.
 
@@ -30,7 +30,7 @@ An automated ingestion job refreshes the dataset every 6 hours and regenerates a
 | **Design** | Static-generation over live querying: deterministic output, zero cold starts, trivially cacheable at the edge |
 | **Status** | Production, publicly deployed, 150+ commits |
 
-This is the one repository in this catalog you can read today. It is representative of how I ship: small surface, no unnecessary infrastructure, automated end to end.
+**Live at [web3-rwa-monitor.pages.dev](https://web3-rwa-monitor.pages.dev)** — and this is the one repository in this catalog you can read today. It is representative of how I ship: small surface, no unnecessary infrastructure, automated end to end.
 
 ---
 
@@ -164,7 +164,7 @@ A commercial platform producing four paid deliverables: complete business evalua
 
 | | |
 |---|---|
-| **Stack** | Python · FastAPI · PostgreSQL + Alembic · TypeScript / React frontend · Stripe · Docker Compose · 378 automated tests |
+| **Stack** | Python · FastAPI · PostgreSQL + Alembic · TypeScript / React frontend · Stripe · Docker Compose · 502 automated tests across 44 test modules |
 | **Status** | Core engine complete, hardening in progress |
 
 ---
@@ -259,12 +259,12 @@ A commercial-grade platform built around an upstream WiFi channel-state-informat
 09  HANDOFF                        Final handoff document
 ```
 
-All ten phase gates passed. The plugin-based detector SDK means new detection behaviors ship without touching the ingestion path.
+All phase gates passed. The plugin-based detector SDK means new detection behaviors ship without touching the ingestion path.
 
 | | |
 |---|---|
 | **Stack** | Python · FastAPI · PostgreSQL + Alembic · TypeScript / React operational console with floor-plan editor · Docker · PowerShell operations tooling · ESP32-C6 sensing nodes streaming CSI over UDP · Android cellular gateway |
-| **Status** | MVP complete, all phase gates passed — deployed against a live multi-zone sensor mesh |
+| **Status** | MVP complete, every phase gate passed — deployed against a live multi-zone sensor mesh |
 
 ---
 
@@ -272,7 +272,9 @@ All ten phase gates passed. The plugin-based detector SDK means new detection be
 
 ### Umbral — report generation SaaS
 
-A full commercial SaaS surface: authentication with email verification and password reset, subscription and one-time checkout, order management, report generation and preview, private report library, sharing, an admin panel, and a customer dashboard — with SEO handled properly (dynamic sitemap, robots policy, JSON-LD structured data) rather than bolted on.
+A commercial SaaS surface covering the full customer lifecycle: authentication with email verification and password reset, Stripe checkout, order management, AI-backed report generation and preview, a private report library with sharing, campaign and newsletter tooling, an admin panel, and a customer dashboard — with SEO handled properly (dynamic sitemap, robots policy, JSON-LD structured data, dynamic OG images) rather than bolted on.
+
+Server-side concerns are implemented as dedicated API route groups (`auth`, `stripe`, `ai`, `campaigns`, `newsletter`, `admin`, `og`) over a Supabase schema managed through versioned SQL migrations and edge functions.
 
 | | |
 |---|---|
@@ -289,7 +291,7 @@ A full commercial SaaS surface: authentication with email verification and passw
 
 **Guardrails as code, not as instructions.** In systems where an agent can act outward, confidentiality filtering and approval gates are separate enforced subsystems sitting between generation and any external surface. Policy that lives only in a prompt is not policy.
 
-**Tests scale with irreversibility.** Founder's Grip carries 378 automated tests; Nous runs 13 independent suites against a real database with transactional rollback fixtures. Systems that only render get visual and end-to-end coverage instead. I do not apply a uniform coverage number to non-uniform risk.
+**Tests scale with irreversibility.** Founder's Grip carries 502 automated tests across 44 modules; Nous runs 13 independent suites against a real database with transactional rollback fixtures. Systems that only render get visual and end-to-end coverage instead. I do not apply a uniform coverage number to non-uniform risk.
 
 **Polyglot where it earns its keep.** Go for transactional throughput, Python for ML and data pipelines, Rust for native desktop shells, TypeScript everywhere a human looks. Boundaries are explicit contracts — gRPC with Protocol Buffers, typed HTTP APIs — never shared mutable state across a language boundary.
 

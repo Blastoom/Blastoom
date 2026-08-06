@@ -311,7 +311,7 @@ Server-side concerns are implemented as dedicated API route groups (`auth`, `str
 | **AI / ML** | Multi-provider LLM routing (Anthropic, OpenAI, Gemini, Groq, DeepSeek, Mistral, OpenRouter, Ollama) · vLLM self-hosted serving · LoRA fine-tuning on NVIDIA DGX · RAG and hybrid retrieval · knowledge graphs · MCP (Model Context Protocol) · scikit-learn · XGBoost · Optuna · spaCy · OpenCV · PyTesseract |
 | **Infrastructure** | Docker & Docker Compose · Caddy · MinIO · Prometheus · Grafana · Loki · GitHub Actions · Cloudflare Pages · Tailscale |
 | **Testing** | pytest · Vitest · Playwright · visual regression · end-to-end contract testing |
-| **Edge / IoT** | ESP32-C6 · WiFi CSI sensing · UDP telemetry ingestion · Android gateway |
+| **Edge / IoT** | Raspberry Pi · Arduino · ESP32 / ESP32-C6 · WiFi CSI sensing · high-frequency DAQ and sensor logging · UDP telemetry ingestion · Android gateway |
 
 ---
 

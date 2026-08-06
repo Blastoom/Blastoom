@@ -185,6 +185,29 @@ An internal intelligence platform tracking funding programs, accelerators, compe
 
 ---
 
+### Placebook — multiphysics engineering workspace
+
+An engineering workspace where the user describes a calculation in plain language and the system decides which solvers to run and in what order, chains the output of one into the input of the next, and returns a report in which every number traces back to the job that produced it.
+
+The bet is not the solving. Established solvers already do that well, and Placebook bridges to them rather than reimplementing them. The bet is the trail: who asked what, under which assumptions, which number came out of which job, and whether that record survives being handed to an auditor.
+
+**Engineering notes**
+
+- **Capabilities, not solver brands.** The user asks for a result; a planner selects from registered capabilities such as thermophysical properties, thermal and multiphysics FEM, isothermal flash, radial DC power flow, and laminar channel flow. Engineers otherwise pick tools by habit rather than by fit, and the abstraction is what makes swapping a solver a configuration change instead of a migration.
+- **No uncited numbers.** A guardrail inspects model output for figures that carry no job reference and forces the citation. A language model that can quietly invent a number is unusable in engineering, so the constraint is enforced in code rather than requested in a prompt.
+- **A closed SI unit bus.** When one calculation feeds the next, the travelling unit is validated against an allowlist and the handoff aborts rather than passing a plausible wrong value downstream. Unit mismatches between chained calculations are a classic silent failure, and silence is the part worth engineering away.
+- **Explicit degradation.** When an optional dependency is absent, results are returned marked as degraded instead of being quietly approximated.
+- **Local by default.** Inference runs against a self-hosted model endpoint, so case material never leaves the operator's own network.
+
+| | |
+|---|---|
+| **Stack** | Go control plane · Python FastAPI solver workers · Next.js / React console · PostgreSQL · MinIO · NATS JetStream for asynchronous jobs · self-hosted LLM inference · Typst for typeset PDF reports · Docker Compose |
+| **Solver bridges** | CoolProp · DOLFINx · OpenFOAM · NeqSim · Kratos · OpenDSS — opt-in, isolated behind a container boundary so a heavy dependency never becomes a hard requirement of the core |
+| **Contracts** | 10 JSON Schemas covering job specs, results, trace events, checkpoints, identity, and handoff packages |
+| **Status** | In active development — 29 commits, seven capabilities registered |
+
+---
+
 ## Trade, logistics, and provenance
 
 ### CDXCargo — unified multimodal logistics operating system
@@ -199,7 +222,7 @@ This is the most polyglot system in the portfolio, and deliberately so: Go for t
 | **ML / document service** | Python 3.11 · FastAPI · gRPC · scikit-learn · XGBoost · Optuna · spaCy · PyTesseract · OpenCV · PyMuPDF |
 | **Admin frontend** | React 19 · Vite 6 · TanStack Query · TanStack Table · Zustand · React Router 6 |
 | **Customer portal** | React 19, white-label with dynamic per-tenant branding |
-| **Database** | PostgreSQL 16 + TimescaleDB · 21 migrations |
+| **Database** | PostgreSQL 16 + TimescaleDB · 22 migrations |
 | **Messaging / cache** | NATS JetStream · Redis 7 |
 | **Search** | Meilisearch v1.9 |
 | **Object storage** | MinIO (S3-compatible) |
@@ -209,6 +232,21 @@ This is the most polyglot system in the portfolio, and deliberately so: Go for t
 | **Deployment** | Docker Compose, single-command self-hosted stack |
 
 Document intelligence handles OCR, classification, and structured extraction from bills of lading, invoices, and customs paperwork; predictive ETAs are trained per lane with hyperparameter search rather than served from a single global model.
+
+---
+
+### Ortressa — traceability control tower
+
+A focused product built on the platform foundation above: a control tower where a cargo owner sees where goods are, which documents back them, and what state each shipment has reached — without being given access to the wider forwarder back office. Where the platform is broad, this is deliberately narrow.
+
+Delivered so far: the control tower foundation, a read API and operational dashboard, secure document intake, and a single map runtime shared between the dashboard and the traceability view rather than two drifting implementations.
+
+**Design note.** Intake models an explicit reviewed state instead of a received/not-received flag. A document that has arrived is not the same as one accepted as evidence, and collapsing the two is what makes a trail indefensible months later when someone asks why a shipment was cleared.
+
+| | |
+|---|---|
+| **Stack** | Go · Gin · PostgreSQL 16 · React 19 · Vite · TypeScript · MapLibre GL · Python ML service over gRPC · Docker Compose |
+| **Status** | Working MVP on a dedicated branch. User-facing rebrand complete; internal identifiers still carry the platform's original naming, left in place on purpose so active sessions do not break |
 
 ---
 

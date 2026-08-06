@@ -239,14 +239,14 @@ A front-end-only interactive hero built as a full-bleed WebGL scene: a sphere co
 
 ## Sensing and edge systems
 
-### RuView Platform — commercial WiFi CSI sensing
+### CSI Platform — commercial WiFi CSI sensing
 
 A commercial-grade platform built around an upstream WiFi channel-state-information (CSI) sensing engine, treated as an untouched dependency. The platform owns everything above the raw signal: topology, zones, calibration, observations, events, incidents, notification and escalation, history, visualization, and operations.
 
 **Development was governed by a written engineering constitution** executed as sequential phase gates — a phase could not begin until the previous phase's acceptance criteria passed:
 
 ```
-00  MASTER PROMPT                  Constitution and absolute rules
+00  TECH STACK ARCHITECTURE        Stack decisions and absolute rules
 01  PLATFORM BASELINE              Inventory and backup of existing installation
 02  PLATFORM FOUNDATION            Repo scaffold, compose stack, DB, API skeleton
 03  PLATFORM CORE                  Registry, observation/event/incident models
@@ -256,7 +256,7 @@ A commercial-grade platform built around an upstream WiFi channel-state-informat
 06B INCIDENT AND NOTIFICATION      Incident engine, escalation, dispatcher
 07  CELLULAR GATEWAY               Gateway SDK plus Android cellular gateway
 08  VALIDATION AND OPERATIONS      End-to-end validation, runbooks, monitoring
-09  HANDOFF                        Final handoff document
+09  PRODUCTION MVP                 Complete and deployed
 ```
 
 All phase gates passed. The plugin-based detector SDK means new detection behaviors ship without touching the ingestion path.
@@ -285,9 +285,9 @@ Server-side concerns are implemented as dedicated API route groups (`auth`, `str
 
 ## How I work
 
-**Constitution-first on large builds.** Substantial systems (RuView Platform, Nous, Founder's Grip) begin with a written engineering constitution: absolute rules, phase decomposition, and explicit acceptance criteria per phase. A phase does not start until the previous one passes. This is why those builds have audit trails instead of archaeology.
+**Constitution-first on large builds.** Substantial systems (CSI Platform, Nous, Founder's Grip) begin with a written engineering constitution: absolute rules, phase decomposition, and explicit acceptance criteria per phase. A phase does not start until the previous one passes. This is why those builds have audit trails instead of archaeology.
 
-**Self-hosted and vendor-independent by default.** CDXCargo, Legal Research Intelligence, and RuView Platform all run as single-command Docker Compose stacks with no managed-cloud dependency. Portability is a requirement, not an aspiration — several of these systems operate in jurisdictions or industries where data residency is not negotiable.
+**Self-hosted and vendor-independent by default.** CDXCargo, Legal Research Intelligence, and CSI Platform all run as single-command Docker Compose stacks with no managed-cloud dependency. Portability is a requirement, not an aspiration — several of these systems operate in jurisdictions or industries where data residency is not negotiable.
 
 **Guardrails as code, not as instructions.** In systems where an agent can act outward, confidentiality filtering and approval gates are separate enforced subsystems sitting between generation and any external surface. Policy that lives only in a prompt is not policy.
 

@@ -2,6 +2,10 @@
 
 **Founder & Systems Architect** — autonomous agent systems, applied AI platforms, and trust infrastructure for physical-asset supply chains.
 
+Industrial Systems Engineer with an M.S. in Electrical Engineering & Computer Science from MIT (2025) and more than 13 years automating industrial processes, integrating legacy systems with modern platforms, and building ad hoc enterprise-grade systems.
+
+**Core expertise:** RAG and GraphRAG systems · specialist agent deployment · fine-tuning · AI and machine learning · traceability · cryptography · post-quantum cybersecurity.
+
 I build production systems end to end: distributed backends, multi-agent orchestration layers, knowledge-graph substrates, edge sensing pipelines, and the operator-facing consoles that make them controllable. Most of my work spans several runtimes at once — Python services, Go APIs, Rust desktop shells, TypeScript frontends — deployed as self-hosted, vendor-independent stacks.
 
 ---
@@ -20,17 +24,27 @@ This page is the public catalog: what each system does, how it is architected, a
 
 ### [web3-rwa-monitor](https://github.com/Blastoom/web3-rwa-monitor) · Public · [Live dashboard](https://web3-rwa-monitor.pages.dev)
 
-Real-time dashboard tracking the global real-world-asset (RWA) tokenization landscape: total RWA market cap, tokenized treasuries, private credit, bonds, equities and real estate, DeFi TVL, stablecoin composition, and on-chain metrics across the top 15 blockchains.
+Dashboard tracking the global real-world-asset (RWA) tokenization landscape: total RWA market cap, tokenized treasuries, private credit, bonds, equities and real estate, DeFi TVL, stablecoin composition, and on-chain metrics across the top 15 blockchains.
 
-An automated ingestion job refreshes the dataset every 6 hours and regenerates a fully static dashboard — no server, no runtime database, no per-visit API cost.
+An ingestion job refreshes the dataset and regenerates a fully static dashboard — no server, no runtime database, no per-visit API cost.
 
 | | |
 |---|---|
-| **Stack** | Python ingestion pipeline · static HTML/CSS/JS dashboard · scheduled CI job · Cloudflare Pages |
+| **Stack** | Python ingestion pipeline · static HTML/CSS/JS dashboard · Cloudflare Pages |
 | **Design** | Static-generation over live querying: deterministic output, zero cold starts, trivially cacheable at the edge |
-| **Status** | Production, publicly deployed, 150+ commits |
+| **Status** | Publicly deployed — 150 commits. Dataset last refreshed 2026-07-31; scheduled refresh currently paused |
 
-**Live at [web3-rwa-monitor.pages.dev](https://web3-rwa-monitor.pages.dev)** — and this is the one repository in this catalog you can read today. It is representative of how I ship: small surface, no unnecessary infrastructure, automated end to end.
+**Live at [web3-rwa-monitor.pages.dev](https://web3-rwa-monitor.pages.dev)** — and this is the one repository in this catalog you can read today. It is representative of how I ship: small surface, no unnecessary infrastructure.
+
+### [CRODAX website](https://crodax.com) · Private source · Live
+
+The public website for CRODAX: industry tracks, a source library, a journal, a contact flow, and a server-side assistant limited to an approved public context, so it answers from reviewed material rather than from whatever a model infers.
+
+| | |
+|---|---|
+| **Stack** | Plain HTML, CSS, and JavaScript · static build with explicit indexing and cache policy · Cloudflare Pages · Pages Functions · Resend · OpenRouter |
+| **Design** | No browser credentials: anything that needs a key runs in a server function. An earlier full-bleed WebGL prototype (React Three Fiber, GSAP, Lenis) remains in the repository; the production page does not depend on it |
+| **Status** | Production at [crodax.com](https://crodax.com) |
 
 ---
 
@@ -38,7 +52,7 @@ An automated ingestion job refreshes the dataset every 6 hours and regenerates a
 
 ### Nous — autonomous business-intelligence and execution platform
 
-A modular platform that runs continuous research, analysis, and operator-supervised execution across a portfolio of ventures. Built as roughly a dozen independently testable subsystems rather than a monolith, each with its own test suite and its own contract with the others.
+A modular platform that runs continuous research, analysis, and operator-supervised execution across a portfolio of ventures. Built as 19 independently tested subsystems rather than a monolith, each with its own test suite and its own contract with the others.
 
 **Architecture**
 
@@ -63,8 +77,10 @@ A modular platform that runs continuous research, analysis, and operator-supervi
 
 | | |
 |---|---|
-| **Stack** | Python 3.14 · PostgreSQL · pytest across 13 independent suites · TypeScript + Astro operator console · vLLM / LoRA fine-tuning on NVIDIA DGX · LaTeX document generation |
-| **Status** | Operational, actively developed — 187+ commits |
+| **Stack** | Python 3.14 · PostgreSQL · 4,200+ pytest tests across 19 subsystems · TypeScript + React + Vite operator console · vLLM / LoRA fine-tuning on NVIDIA DGX · LaTeX document generation |
+| **Status** | Operational — 325 commits |
+
+**NOUS Lavinium** is a separate local-first edition for sales, follow-up, and commercial governance: CRM, evidence-backed fit signals, follow-up planning, scheduling, and quoting from an approved rate card. Its runtime uses SQLite and no third-party Python packages, so it installs as a single macOS application; changing a quote's content invalidates its approval, because an approval only means something for the exact text that was reviewed. It is a first supervised increment: integration adapters exist, and connecting them requires credentials and contracts that are still pending.
 
 ---
 
@@ -101,6 +117,21 @@ A native desktop console for operating a heterogeneous fleet of machines, agents
 |---|---|
 | **Stack** | Rust (Tauri v2, ~400 KB source) · TypeScript + React · custom CSS design system, no component library |
 | **Status** | Operational — 32 commits |
+
+---
+
+### Agent Cockpit — terminal observability for multi-agent work
+
+A native terminal console that shows what every coding agent on a machine is doing, across eight CLIs: sessions, subagents, delegation maps, usage and estimated cost per model, and the state of every repository they touch.
+
+It is deliberately an observer, not another orchestrator. It launches nothing and controls nothing; it reads the records those tools already write to disk. That keeps it from becoming a failure point for the work it watches.
+
+**Engineering note.** A session counts as live only on evidence: a recent transcript event or a running console. An agent waiting at a prompt stays visible without its last-event time being rewritten, so the idle age shown is always true.
+
+| | |
+|---|---|
+| **Stack** | Rust · Ratatui · Crossterm · Notify · Python tooling · 459 Rust tests and 80 Python tests |
+| **Status** | Operational — 47 commits |
 
 ---
 
@@ -154,17 +185,19 @@ It is explicitly **not** a chatbot and **not** an autonomous legal decision-make
 
 ### Founder's Grip — AI startup evaluation and valuation platform
 
-A commercial platform producing four paid deliverables: complete business evaluation, company valuation, business plan, and master business plan. The product is a document-generation pipeline with real financial modeling behind it, not a prompt wrapper.
+A commercial platform designed around four one-time paid deliverables: complete business evaluation, company valuation, business plan, and master business plan. The complete business evaluation is the active MVP tier; the other three follow it. The product is a deterministic document pipeline with financial modeling behind it, not a prompt wrapper.
 
-- **Config-driven vertical system** — 19 industry verticals defined as configuration rather than code, so adding or tuning a vertical requires no deployment
-- **Ten-phase generation pipeline** with an explicit 14-state machine and background job execution
-- **34-entity domain model** across 11 architectural layers
+**Design rule.** AI is never authoritative. Scores, formulas, payments, state transitions, permissions, and audit logs stay in deterministic backend code; models classify, narrate, and interpret.
+
+- **Config-driven vertical system** — 19 industry verticals supported through schema-validated configuration rather than code, five active in the first wave
+- **Explicit 14-state project machine** with background job execution
+- **17-table relational domain model**
 - **Valuation engine** with comparable-multiple benchmarking
 - Stripe one-time payment integration per tier
 
 | | |
 |---|---|
-| **Stack** | Python · FastAPI · PostgreSQL + Alembic · TypeScript / React frontend · Stripe · Docker Compose · 502 automated tests across 44 test modules |
+| **Stack** | Python · FastAPI · PostgreSQL + Alembic · Next.js 15 + React 19 frontend · Stripe · Docker Compose · 535 automated tests across 46 test modules on the current integration branches |
 | **Status** | Core engine complete, hardening in progress |
 
 ---
@@ -203,22 +236,24 @@ The bet is not the solving. Established solvers already do that well, and Placeb
 |---|---|
 | **Stack** | Go control plane · Python FastAPI solver workers · Next.js / React console · PostgreSQL · MinIO · NATS JetStream for asynchronous jobs · self-hosted LLM inference · Typst for typeset PDF reports · Docker Compose |
 | **Solver bridges** | CoolProp · DOLFINx · OpenFOAM · NeqSim · Kratos · OpenDSS — opt-in, isolated behind a container boundary so a heavy dependency never becomes a hard requirement of the core |
-| **Contracts** | 10 JSON Schemas covering job specs, results, trace events, checkpoints, identity, and handoff packages |
-| **Status** | In active development — 29 commits, seven capabilities registered |
+| **Contracts** | 9 JSON Schemas covering job specs, results, trace events, checkpoints, identity, and handoff packages |
+| **Status** | In development — 30 commits, seven capabilities registered |
 
 ---
 
 ## Trade, logistics, and provenance
 
-### CDXCargo — unified multimodal logistics operating system
+### Ortressa — multimodal logistics platform and traceability control tower
 
-A compliance-first platform for freight forwarders unifying CRM, multimodal shipment management (ocean, air, road, rail), document intelligence, real-time tracking, predictive ETAs, white-label customer portals, and double-entry accounting — fully self-hosted with no cloud-vendor dependency.
+A compliance-first platform for freight forwarders unifying CRM, multimodal shipment management (ocean, air, road, rail), document intelligence, real-time tracking, predictive ETAs, white-label customer portals, and double-entry accounting — fully self-hosted with no cloud-vendor dependency. On that foundation sits a control tower where a cargo owner sees where goods are, which documents back them, and what state each shipment has reached, without being given access to the wider forwarder back office.
 
-This is the most polyglot system in the portfolio, and deliberately so: Go for the transactional core, Python for the ML surface, TypeScript for the operator and customer frontends, with gRPC and Protocol Buffers as the contract between them.
+Previously catalogued as CDXCargo. That repository is archived; the complete rebrand reached the Go module, infrastructure identifiers, and browser storage, and development continues here.
+
+This is the most polyglot system in the portfolio, and deliberately so: Go for the transactional core, Python for the ML surface, TypeScript for the operator and customer frontends, with gRPC and Protocol Buffers as the contract between them. Business domains ship as 11 self-registering modules, so a new line of business does not reach into the core.
 
 | Layer | Technology |
 |---|---|
-| **Backend API** | Go 1.23 · Gin · pgx · Goose migrations · Zerolog · Viper |
+| **Backend API** | Go 1.25 · Gin · pgx · Goose migrations · Zerolog · Viper |
 | **ML / document service** | Python 3.11 · FastAPI · gRPC · scikit-learn · XGBoost · Optuna · spaCy · PyTesseract · OpenCV · PyMuPDF |
 | **Admin frontend** | React 19 · Vite 6 · TanStack Query · TanStack Table · Zustand · React Router 6 |
 | **Customer portal** | React 19, white-label with dynamic per-tenant branding |
@@ -229,24 +264,16 @@ This is the most polyglot system in the portfolio, and deliberately so: Go for t
 | **Maps / charts** | MapLibre GL JS + OpenStreetMap · Recharts |
 | **Edge / observability** | Caddy 2 · Prometheus · Grafana · Loki |
 | **Contracts** | Protocol Buffers (proto3) over gRPC |
+| **Testing** | 618 Go tests · 124 frontend tests · 34 Python tests |
 | **Deployment** | Docker Compose, single-command self-hosted stack |
 
 Document intelligence handles OCR, classification, and structured extraction from bills of lading, invoices, and customs paperwork; predictive ETAs are trained per lane with hyperparameter search rather than served from a single global model.
 
----
-
-### Ortressa — traceability control tower
-
-A focused product built on the platform foundation above: a control tower where a cargo owner sees where goods are, which documents back them, and what state each shipment has reached — without being given access to the wider forwarder back office. Where the platform is broad, this is deliberately narrow.
-
-Delivered so far: the control tower foundation, a read API and operational dashboard, secure document intake, and a single map runtime shared between the dashboard and the traceability view rather than two drifting implementations.
-
-**Design note.** Intake models an explicit reviewed state instead of a received/not-received flag. A document that has arrived is not the same as one accepted as evidence, and collapsing the two is what makes a trail indefensible months later when someone asks why a shipment was cleared.
+**Design note.** Document intake models an explicit reviewed state instead of a received/not-received flag. A document that has arrived is not the same as one accepted as evidence, and collapsing the two is what makes a trail indefensible months later when someone asks why a shipment was cleared.
 
 | | |
 |---|---|
-| **Stack** | Go · Gin · PostgreSQL 16 · React 19 · Vite · TypeScript · MapLibre GL · Python ML service over gRPC · Docker Compose |
-| **Status** | Working MVP on a dedicated branch. User-facing rebrand complete; internal identifiers still carry the platform's original naming, left in place on purpose so active sessions do not break |
+| **Status** | Working MVP — 40 commits |
 
 ---
 
@@ -261,17 +288,6 @@ Trust and provenance infrastructure for physical assets moving through supply ch
 | **Disclosable domains** | Electronic bill of lading (eBL) and digital trade documentation · asset traceability · digital product passport (DPP) · ESG and RegTech reporting · post-quantum cryptography readiness |
 | **Stack** (disclosable) | TypeScript · Electron desktop verification client · React · Vite · Playwright end-to-end testing |
 | **Status** | IP filing in progress — technical detail under NDA and subject to filing status |
-
----
-
-### CRODAX Site — immersive WebGL brand experience
-
-A front-end-only interactive hero built as a full-bleed WebGL scene: a sphere composed of independent tangent fragments that fractures, then reassembles as a synchronization field stabilizes routes and trust packets between the fragments. A second scroll sequence assembles fragment plates into a curated gallery of real-world assets — cargo vessel, diploma, patent document, luxury watch, EV battery — each standing in for a class of asset the underlying platform certifies.
-
-| | |
-|---|---|
-| **Stack** | Vite · React · TypeScript · React Three Fiber + Three.js + drei · GSAP ScrollTrigger · Lenis smooth scrolling · Framer Motion · plain CSS with custom properties |
-| **Notes** | No CSS framework and no component library — the visual language is specific enough that a generic design system would have fought it |
 
 ---
 
@@ -321,15 +337,28 @@ Server-side concerns are implemented as dedicated API route groups (`auth`, `str
 
 ---
 
+### Founders Grip v2.0 — modular operations platform for small businesses
+
+A separate product from the valuation platform above: guided worksheets, deterministic calculations, sales and inventory, and planning modules for finance, projects, people, cash, marketing, and materials, in English and Spanish.
+
+**Design note.** The system says where each number lives. Inventory has server authority on PostgreSQL when a backend is configured, while the six additional modules stay local to the browser, and the interface does not present a local dashboard as a consolidated ledger. Mixing the two silently is how a planning tool ends up being read as accounting.
+
+| | |
+|---|---|
+| **Stack** | TypeScript · React 19 · Vite 7 · Supabase (PostgreSQL, edge functions, 15 SQL files) · Rust core crate · Tauri desktop shell · 263 frontend tests |
+| **Status** | Local MVP/Beta review candidate — not yet approved for production |
+
+---
+
 ## How I work
 
 **Constitution-first on large builds.** Substantial systems (CSI Platform, Nous, Founder's Grip) begin with a written engineering constitution: absolute rules, phase decomposition, and explicit acceptance criteria per phase. A phase does not start until the previous one passes. This is why those builds have audit trails instead of archaeology.
 
-**Self-hosted and vendor-independent by default.** CDXCargo, Legal Research Intelligence, and CSI Platform all run as single-command Docker Compose stacks with no managed-cloud dependency. Portability is a requirement, not an aspiration — several of these systems operate in jurisdictions or industries where data residency is not negotiable.
+**Self-hosted and vendor-independent by default.** Ortressa, Legal Research Intelligence, and CSI Platform all run as single-command Docker Compose stacks with no managed-cloud dependency. Portability is a requirement, not an aspiration — several of these systems operate in jurisdictions or industries where data residency is not negotiable.
 
 **Guardrails as code, not as instructions.** In systems where an agent can act outward, confidentiality filtering and approval gates are separate enforced subsystems sitting between generation and any external surface. Policy that lives only in a prompt is not policy.
 
-**Tests scale with irreversibility.** Founder's Grip carries 502 automated tests across 44 modules; Nous runs 13 independent suites against a real database with transactional rollback fixtures. Systems that only render get visual and end-to-end coverage instead. I do not apply a uniform coverage number to non-uniform risk.
+**Tests scale with irreversibility.** Founder's Grip carries 535 automated tests across 46 modules on its integration branches; Nous runs 4,200+ tests across 19 subsystems, with real-database suites using transactional rollback fixtures. Systems that only render get visual and end-to-end coverage instead. I do not apply a uniform coverage number to non-uniform risk.
 
 **Polyglot where it earns its keep.** Go for transactional throughput, Python for ML and data pipelines, Rust for native desktop shells, TypeScript everywhere a human looks. Boundaries are explicit contracts — gRPC with Protocol Buffers, typed HTTP APIs — never shared mutable state across a language boundary.
 
@@ -344,11 +373,11 @@ Server-side concerns are implemented as dedicated API route groups (`auth`, `str
 | **Languages** | Python · TypeScript · Go · Rust · SQL · Bash · PowerShell |
 | **Backend** | FastAPI · Gin · Next.js API routes · gRPC / Protocol Buffers · NATS JetStream · Celery-style background workers |
 | **Frontend** | React 19 · Next.js 14/15 · Astro · Vite · Tailwind CSS · Radix UI · TanStack Query / Table · Zustand · Framer Motion · GSAP · Three.js / React Three Fiber · Recharts · MapLibre GL |
-| **Desktop** | Tauri v2 (Rust) · Electron |
+| **Desktop / terminal** | Tauri v2 (Rust) · Electron · Ratatui |
 | **Data** | PostgreSQL 16 · TimescaleDB · SQLite · Supabase · Redis · Meilisearch · vector databases · Prisma · Alembic · Goose |
 | **AI / ML** | Multi-provider LLM routing (Anthropic, OpenAI, Gemini, Groq, DeepSeek, Mistral, OpenRouter, Ollama) · vLLM self-hosted serving · LoRA fine-tuning on NVIDIA DGX · RAG and hybrid retrieval · knowledge graphs · MCP (Model Context Protocol) · scikit-learn · XGBoost · Optuna · spaCy · OpenCV · PyTesseract |
-| **Infrastructure** | Docker & Docker Compose · Caddy · MinIO · Prometheus · Grafana · Loki · GitHub Actions · Cloudflare Pages · Tailscale |
-| **Testing** | pytest · Vitest · Playwright · visual regression · end-to-end contract testing |
+| **Infrastructure** | Docker & Docker Compose · Caddy · MinIO · Prometheus · Grafana · Loki · GitHub Actions · Cloudflare Pages and Functions · Tailscale |
+| **Testing** | pytest · Go testing · Rust tests · Vitest · Playwright · visual regression · end-to-end contract testing |
 | **Edge / IoT** | Raspberry Pi · Arduino · ESP32 / ESP32-C6 · WiFi CSI sensing · high-frequency DAQ and sensor logging · UDP telemetry ingestion · Android gateway |
 
 ---

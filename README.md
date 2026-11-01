@@ -2,7 +2,7 @@
 
 **Founder & Systems Architect** — autonomous agent systems, applied AI platforms, and trust infrastructure for physical-asset supply chains.
 
-Industrial Systems Engineer with an M.S. in Electrical Engineering & Computer Science from MIT (2025) and more than 13 years automating industrial processes, integrating legacy systems with modern platforms, and building ad hoc enterprise-grade systems.
+Industrial Systems Engineer with an M.S. in Electrical Engineering & Computer Science from MIT (2025) and more than 13 years automating industrial processes, integrating legacy systems with modern platforms, and building custom enterprise-grade systems.
 
 **Core expertise:** RAG and GraphRAG systems · specialist agent deployment · fine-tuning · AI and machine learning · traceability · cryptography · post-quantum cybersecurity.
 
@@ -52,7 +52,7 @@ The public website for CRODAX: industry tracks, a source library, a journal, a c
 
 ### Nous — autonomous business-intelligence and execution platform
 
-A modular platform that runs continuous research, analysis, and operator-supervised execution across a portfolio of ventures. Built as 19 independently tested subsystems rather than a monolith, each with its own test suite and its own contract with the others.
+A modular platform that runs continuous research, analysis, and operator-supervised execution across a portfolio of ventures. Built as independently tested subsystems rather than a monolith, each with its own test suite and its own contract with the others.
 
 **Architecture**
 
@@ -77,7 +77,7 @@ A modular platform that runs continuous research, analysis, and operator-supervi
 
 | | |
 |---|---|
-| **Stack** | Python 3.14 · PostgreSQL · 4,200+ pytest tests across 19 subsystems · TypeScript + React + Vite operator console · vLLM / LoRA fine-tuning on NVIDIA DGX · LaTeX document generation |
+| **Stack** | Python 3.14 · PostgreSQL · 4,200+ pytest tests · TypeScript + React + Vite operator console · vLLM / LoRA fine-tuning on NVIDIA DGX · LaTeX document generation |
 | **Status** | Operational — 325 commits |
 
 **NOUS Lavinium** is a separate local-first edition for sales, follow-up, and commercial governance: CRM, evidence-backed fit signals, follow-up planning, scheduling, and quoting from an approved rate card. Its runtime uses SQLite and no third-party Python packages, so it installs as a single macOS application; changing a quote's content invalidates its approval, because an approval only means something for the exact text that was reviewed. It is a first supervised increment: integration adapters exist, and connecting them requires credentials and contracts that are still pending.
@@ -183,7 +183,7 @@ It is explicitly **not** a chatbot and **not** an autonomous legal decision-make
 
 ---
 
-### Founder's Grip — AI startup evaluation and valuation platform
+### Founders Grip — AI startup evaluation and valuation platform
 
 A commercial platform designed around four one-time paid deliverables: complete business evaluation, company valuation, business plan, and master business plan. The complete business evaluation is the active MVP tier; the other three follow it. The product is a deterministic document pipeline with financial modeling behind it, not a prompt wrapper.
 
@@ -197,7 +197,7 @@ A commercial platform designed around four one-time paid deliverables: complete 
 
 | | |
 |---|---|
-| **Stack** | Python · FastAPI · PostgreSQL + Alembic · Next.js 15 + React 19 frontend · Stripe · Docker Compose · 535 automated tests across 46 test modules on the current integration branches |
+| **Stack** | Python · FastAPI · PostgreSQL + Alembic · Next.js 15 + React 19 frontend · Stripe · Docker Compose · 500+ automated tests on its integration branches |
 | **Status** | Core engine complete, hardening in progress |
 
 ---
@@ -352,13 +352,13 @@ A separate product from the valuation platform above: guided worksheets, determi
 
 ## How I work
 
-**Constitution-first on large builds.** Substantial systems (CSI Platform, Nous, Founder's Grip) begin with a written engineering constitution: absolute rules, phase decomposition, and explicit acceptance criteria per phase. A phase does not start until the previous one passes. This is why those builds have audit trails instead of archaeology.
+**Constitution-first on large builds.** Substantial systems (CSI Platform, Nous, Founders Grip) begin with a written engineering constitution: absolute rules, phase decomposition, and explicit acceptance criteria per phase. A phase does not start until the previous one passes. This is why those builds have audit trails instead of archaeology.
 
 **Self-hosted and vendor-independent by default.** Ortressa, Legal Research Intelligence, and CSI Platform all run as single-command Docker Compose stacks with no managed-cloud dependency. Portability is a requirement, not an aspiration — several of these systems operate in jurisdictions or industries where data residency is not negotiable.
 
 **Guardrails as code, not as instructions.** In systems where an agent can act outward, confidentiality filtering and approval gates are separate enforced subsystems sitting between generation and any external surface. Policy that lives only in a prompt is not policy.
 
-**Tests scale with irreversibility.** Founder's Grip carries 535 automated tests across 46 modules on its integration branches; Nous runs 4,200+ tests across 19 subsystems, with real-database suites using transactional rollback fixtures. Systems that only render get visual and end-to-end coverage instead. I do not apply a uniform coverage number to non-uniform risk.
+**Tests scale with irreversibility.** Founders Grip carries 500+ automated tests on its integration branches; Nous runs 4,200+ tests, with real-database suites using transactional rollback fixtures. Systems that only render get visual and end-to-end coverage instead. I do not apply a uniform coverage number to non-uniform risk.
 
 **Polyglot where it earns its keep.** Go for transactional throughput, Python for ML and data pipelines, Rust for native desktop shells, TypeScript everywhere a human looks. Boundaries are explicit contracts — gRPC with Protocol Buffers, typed HTTP APIs — never shared mutable state across a language boundary.
 
